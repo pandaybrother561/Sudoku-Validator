@@ -1,0 +1,44 @@
+def is_valid_sudoku(board):
+    # Helper function: check if a unit has duplicates (ignoring ".")
+    def is_valid_unit(unit):
+        elements = [str(x) for x in unit if x != "." and x != "0" and x != 0]
+        return len(elements) == len(set(elements))
+
+    # 1. Check rows
+    for row in board:
+        if not is_valid_unit(row):
+            return False
+
+    # 2. Check columns
+    for col in range(9):
+        column = [board[row][col] for row in range(9)]
+        if not is_valid_unit(column):
+            return False
+
+    # 3. Check 3x3 subgrids
+    for box_row in range(0, 9, 3):
+        for box_col in range(0, 9, 3):
+            block = []
+            for i in range(3):
+                for j in range(3):
+                    block.append(board[box_row + i][box_col + j])
+            if not is_valid_unit(block):
+                return False
+
+    return True
+
+
+# Example Sudoku board (with "." for empty cells)
+sudoku_board = [
+    ["5", "3", ".", ".", "7", ".", ".", ".", "."],
+    ["6", ".", ".", "1", "9", "5", ".", ".", "."],
+    [".", "9", "8", ".", ".", ".", ".", "6", "."],
+    ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
+    ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
+    ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
+    [".", "6", ".", ".", ".", ".", "2", "8", "."],
+    [".", ".", ".", "4", "1", "9", ".", ".", "5"],
+    [".", ".", ".", ".", "8", ".", ".", "7", "9"]
+]
+
+print(is_valid_sudoku(sudoku_board))  # ✅ Should print True
